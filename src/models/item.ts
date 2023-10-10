@@ -5,7 +5,7 @@ const ItemSchema = new Schema<Car>(
   {
     make: { type: String, required: true },
     model: { type: String, required: true },
-    serial_numer: { type: Number, required: true },
+    serial_numer: { type: Number, required: true, unique: true },
     color: { type: String },
     gas: { type: String, enum: ["gasoline", "electric"] },
     year: { type: Number, required: true },
