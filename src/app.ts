@@ -1,19 +1,27 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import "dotenv/config";
 import { router } from './routes';
 import dbConnect from './config/mongo';
+import helmet from 'helmet';
+import compression from 'compression';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(morgan('dev'));
+// app.use(compression({
+//     threshold: 0, // Comprimir todas las respuestas, independientemente del tamaño
+//     filter: (req, res) => {
+//       return /json|text|javascript|css/.test(<string>res.getHeader('Content-Type'));
+//     },
+//     level: 0, // Nivel de compresión (0-9)
+//   })) // Compress HTTP body responses 
+
+app.use(compression());
+app.use(helmet()); // Helmet provides HTTP headers in the response for app security
+app.use(cors()); // Cors is a control to manage the access from clients to APIs
+app.use(morgan('dev')); // morgan is log triggered by API consuming
 app.use(express.json())
 dbConnect();
 app.use(router);
 
-app.listen(PORT, () => {
-    console.log(`running on port ${PORT}`)
-});
+export default app;
