@@ -5,6 +5,8 @@ import { router } from './routes';
 import dbConnect from './config/mongo';
 import helmet from 'helmet';
 import compression from 'compression';
+import logger from './utilities/logger';
+import { loadErrorHandling } from './utilities/errorHandling';
 
 const app = express();
 
@@ -23,5 +25,10 @@ app.use(morgan('dev')); // morgan is log triggered by API consuming
 app.use(express.json())
 dbConnect();
 app.use(router);
+
+loadErrorHandling(app);
+
+// logger.info("bad")
+// logger.error("hay jueputa")
 
 export default app;
